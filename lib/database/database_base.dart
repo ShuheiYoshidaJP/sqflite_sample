@@ -3,15 +3,15 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_sample/config/app_config.dart';
 
 //https://github.com/burhanrashid52/WhatTodo/blob/master/lib/db/app_db.dart
-class DatabaseProtocol {
+class DatabaseBase {
 
-  static final DatabaseProtocol _instance = DatabaseProtocol._internal();
+  static final DatabaseBase _instance = DatabaseBase._internal();
 
-  DatabaseProtocol._internal();
+  DatabaseBase._internal();
 
   late Database _database;
 
-  static DatabaseProtocol get() {
+  static DatabaseBase get() {
     return _instance;
   }
 
