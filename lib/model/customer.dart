@@ -1,29 +1,38 @@
+import 'package:uuid/uuid.dart';
+
 class Customer {
-  static String tableKey = 'customers';
+  static String tableKey = 'Customer';
   static String idKey = 'id';
   static String firstNameKey = 'firstName';
   static String lastNameKey = 'lastName';
-  static String kanaFirstNameKey = 'kanaFirstName';
-  static String kanaLastNameKey = 'kanaLastName';
   static String lastVisitKey = 'lastVisit';
   static String createdAtKey = 'createdAt';
   static String phoneNumberKey = 'phoneNumber';
   static String customerNumberKey = 'customerNumber';
 
-  final int id;
-  final String firstName, lastName;
-  final String? kanaFirstName, kanaLastName, lastVisit, createdAt;
-  final int? phoneNumber, customerNumber;
+  static String firstNamePlaceholder = 'FirstName';
+  static String lastNamePlaceholder = 'LastName';
+  static String lastVisitPlaceholder = 'Last Visit';
+  static String createdAtPlaceholder = 'Created At';
+  static String phoneNumberTitle = 'Phone Number';
+  static String customerNumberTitle = 'Customer Number';
+  static int phoneNumberInitial = 0;
+  static int customerNumberInitial = 1000;
+
+  final int phoneNumber, customerNumber;
+  final String id, firstName, lastName, createdAt, lastVisit;
+
+  static const _uuid = Uuid();
 
   String get fullName => '$firstName $lastName';
 
   Map<String, Object?> get toMap {
+    //var uuid = Uuid();
+    //TODO:- introduce uuid
     return {
       Customer.idKey: id,
       Customer.firstNameKey: firstName,
       Customer.lastNameKey: lastName,
-      Customer.kanaFirstNameKey: kanaFirstName,
-      Customer.kanaLastNameKey: kanaLastName,
       Customer.lastVisitKey: lastVisit,
       Customer.createdAtKey: createdAt,
       Customer.phoneNumberKey: phoneNumber,
@@ -31,26 +40,31 @@ class Customer {
     };
   }
 
-  Customer.init(
+  Customer(
       {required this.id,
       required this.firstName,
       required this.lastName,
-      this.kanaFirstName,
-      this.kanaLastName,
-      this.lastVisit,
-      this.createdAt,
-      this.phoneNumber,
-      this.customerNumber});
+      required this.lastVisit,
+      required this.createdAt,
+      required this.phoneNumber,
+      required this.customerNumber});
+
+  Customer.init()
+      : id = _uuid.v1(),
+        firstName = firstNamePlaceholder,
+        lastName = lastNamePlaceholder,
+        lastVisit = lastVisitPlaceholder,
+        createdAt = createdAtPlaceholder,
+        phoneNumber = phoneNumberInitial,
+        customerNumber = customerNumberInitial;
 
   Customer.fromMap(Map<String, dynamic> map)
-      : this.init(
+      : this(
           id: map[Customer.idKey],
           firstName: map[Customer.firstNameKey],
           lastName: map[Customer.lastNameKey],
-          kanaFirstName: map[Customer.kanaFirstNameKey],
-          kanaLastName: map[Customer.kanaLastNameKey],
-          lastVisit: map[Customer.lastVisitKey],
           createdAt: map[Customer.createdAtKey],
+          lastVisit: map[Customer.lastVisitKey],
           phoneNumber: map[Customer.phoneNumberKey],
           customerNumber: map[Customer.customerNumberKey],
         );
