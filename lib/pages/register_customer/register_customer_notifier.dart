@@ -37,12 +37,12 @@ class RegisterCustomerStateNotifier extends StateNotifier<RegisterCustomerState>
     var lastVisit = DateTime.now();
     var customer = Customer(
         id: id,
-        firstName: state.firstName ?? '',
-        lastName: state.lastName ?? '',
+        firstName: state.firstName,
+        lastName: state.lastName,
         lastVisit: lastVisit.toString(),
         createdAt: createdAt.toString(),
-        phoneNumber: state.phoneNumber ?? 0,
-        customerNumber: state.customerNumber ?? 0);
+        phoneNumber: state.phoneNumber,
+        customerNumber: state.customerNumber);
     _database.insert(customer);
   }
 }

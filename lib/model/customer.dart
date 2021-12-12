@@ -19,16 +19,15 @@ class Customer {
   static int phoneNumberInitial = 0;
   static int customerNumberInitial = 1000;
 
-  final int phoneNumber, customerNumber;
-  final String id, firstName, lastName, createdAt, lastVisit;
+  final String id;
+  final int? phoneNumber, customerNumber;
+  final String? firstName, lastName, createdAt, lastVisit;
 
   static const _uuid = Uuid();
 
   String get fullName => '$firstName $lastName';
 
   Map<String, Object?> get toMap {
-    //var uuid = Uuid();
-    //TODO:- introduce uuid
     return {
       Customer.idKey: id,
       Customer.firstNameKey: firstName,
@@ -42,19 +41,19 @@ class Customer {
 
   Customer(
       {required this.id,
-      required this.firstName,
-      required this.lastName,
-      required this.lastVisit,
-      required this.createdAt,
-      required this.phoneNumber,
-      required this.customerNumber});
+      this.firstName,
+      this.lastName,
+      this.lastVisit,
+      this.createdAt,
+      this.phoneNumber,
+      this.customerNumber});
 
   Customer.init()
       : id = _uuid.v1(),
-        firstName = firstNamePlaceholder,
-        lastName = lastNamePlaceholder,
-        lastVisit = lastVisitPlaceholder,
-        createdAt = createdAtPlaceholder,
+        firstName = null,
+        lastName = null,
+        lastVisit = null,
+        createdAt = null,
         phoneNumber = phoneNumberInitial,
         customerNumber = customerNumberInitial;
 

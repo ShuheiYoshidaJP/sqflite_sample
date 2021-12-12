@@ -74,7 +74,7 @@ class RegisterCustomerView extends HookConsumerWidget {
           style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
-            labelText: initialText,
+            labelText: label,
           ),
           keyboardType: keyboardType,
           onSubmitted: onSubmitted,
