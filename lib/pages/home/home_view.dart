@@ -24,7 +24,7 @@ class HomeView extends HookConsumerWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const RegisterCustomerView()));
+              MaterialPageRoute(builder: (context) => RegisterCustomerView()));
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
