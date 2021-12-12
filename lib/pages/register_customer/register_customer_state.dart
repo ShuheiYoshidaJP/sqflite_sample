@@ -5,6 +5,7 @@ part 'register_customer_state.freezed.dart';
 @freezed
 class RegisterCustomerState with _$RegisterCustomerState {
   const factory RegisterCustomerState({
+    required bool isNew,
     required String id,
     required String firstName,
     required String lastName,

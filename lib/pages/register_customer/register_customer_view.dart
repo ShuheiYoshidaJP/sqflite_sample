@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sqflite_sample/model/customer.dart';
 import 'package:sqflite_sample/other/constants.dart';
+import 'package:sqflite_sample/pages/register_customer/register_customer_notifier.dart';
 import 'package:sqflite_sample/pages/register_customer/register_customer_provider.dart';
 import 'package:sqflite_sample/pages/home/home_provider.dart';
+import 'package:sqflite_sample/pages/register_customer/register_customer_state.dart';
 import 'package:sqflite_sample/sub_view/wide_width_button.dart';
 
 class RegisterCustomerView extends HookConsumerWidget {
-  RegisterCustomerView({Key? key, this.editingCustomer}) : super(key: key) {
-    _customer = editingCustomer ?? Customer.init();
-  }
+  const RegisterCustomerView({Key? key, this.editingCustomer}) : super(key: key);
 
   final Customer? editingCustomer;
-  late final Customer _customer;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notifier =
-        ref.watch(registerCustomerStateProvider(_customer).notifier);
+        ref.watch(registerCustomerStateProvider(editingCustomer).notifier);
+    final state = ref.watch(registerCustomerStateProvider(editingCustomer));
     final homeNotifier = ref.watch(homeProvider.notifier);
     return Scaffold(
       appBar: AppBar(),
@@ -26,12 +26,12 @@ class RegisterCustomerView extends HookConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildTextForms(ref),
+              _buildTextForms(notifier, state),
               _buildSaveButton(() async {
                 await notifier.register();
                 Navigator.of(context).pop();
                 homeNotifier.fetch();
-              })
+              }),
             ],
           ),
         ),
@@ -39,34 +39,23 @@ class RegisterCustomerView extends HookConsumerWidget {
     );
   }
 
-  Widget _buildTextForms(WidgetRef ref) {
-    final state = ref.watch(registerCustomerStateProvider(_customer));
+  Widget _buildTextForms(RegisterCustomerStateNotifier notifier, RegisterCustomerState state) {
     return Column(
       children: [
         _buildForm(Customer.firstNamePlaceholder, state.firstName,
-            TextInputType.text, (value) => state.copyWith(firstName: value)),
+            TextInputType.text, (value) => notifier.updateFirstName(value)),
         _buildForm(Customer.lastNamePlaceholder, state.lastName,
-            TextInputType.text, (value) => state.copyWith(lastName: value)),
-        _buildForm(
-            Customer.lastVisitPlaceholder,
-            state.lastVisit,
-            TextInputType.datetime,
-            (value) => state.copyWith(lastVisit: value)),
-        _buildForm(
-            Customer.createdAtPlaceholder,
-            state.createdAt,
-            TextInputType.datetime,
-            (value) => state.copyWith(createdAt: value)),
+            TextInputType.text, (value) => notifier.updateLastName(value)),
         _buildForm(
             Customer.phoneNumberTitle,
             state.phoneNumber.toString(),
             TextInputType.number,
-            (value) => state.copyWith(phoneNumber: int.parse(value))),
+            (value) => notifier.updatePhoneNumber(value)),
         _buildForm(
             Customer.customerNumberTitle,
             state.customerNumber.toString(),
             TextInputType.number,
-            (value) => state.copyWith(customerNumber: int.parse(value))),
+            (value) => notifier.updateCustomerNumber(value)),
       ],
     );
   }
