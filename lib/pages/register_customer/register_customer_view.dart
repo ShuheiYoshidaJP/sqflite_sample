@@ -69,15 +69,12 @@ class RegisterCustomerView extends HookConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 10, color: Colors.grey),
-        ),
         TextField(
           controller: TextEditingController(text: initialText),
           style: const TextStyle(fontSize: 12),
-          decoration: const InputDecoration(
-            border: InputBorder.none,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            labelText: initialText,
           ),
           keyboardType: keyboardType,
           onSubmitted: onSubmitted,
