@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:sqflite_sample/pages/home/home_provider.dart';
 import 'package:sqflite_sample/pages/register_customer/register_customer_view.dart';
+import 'package:sqflite_sample/sub_view/home_list_tile.dart';
 
 class HomeView extends HookConsumerWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class HomeView extends HookConsumerWidget {
             )
           : ListView.builder(itemCount: homeState.customers.length,
           itemBuilder: (context, index) {
-            return Text(homeState.customers[index].fullName);
+            return HomeListTile(homeState.customers[index]);
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
