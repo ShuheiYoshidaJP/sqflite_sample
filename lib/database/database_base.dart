@@ -18,7 +18,6 @@ class DatabaseBase {
   }
 
   _onCreatingDatabase(Database database, int version) async {
-    print('database created calld');
     await database.execute('CREATE TABLE ${Customer.tableKey}('
         '${Customer.idKey} TEXT PRIMARY KEY,'
         '${Customer.firstNameKey} TEXT,'
