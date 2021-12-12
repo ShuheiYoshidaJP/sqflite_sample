@@ -1,23 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sqflite_sample/database/customer_database.dart';
 import 'package:sqflite_sample/model/customer.dart';
 import 'package:sqflite_sample/other/constants.dart';
-import 'package:sqflite_sample/pages/register_customer/register_customer_notifier.dart';
-import 'package:sqflite_sample/pages/register_customer/register_customer_provider.dart';
 import 'package:sqflite_sample/pages/home/home_provider.dart';
-import 'package:sqflite_sample/pages/register_customer/register_customer_state.dart';
 import 'package:sqflite_sample/sub_view/wide_width_button.dart';
+import 'package:uuid/uuid.dart';
 
 class RegisterCustomerView extends HookConsumerWidget {
-  const RegisterCustomerView({Key? key, this.editingCustomer}) : super(key: key);
+  RegisterCustomerView({Key? key, this.editingCustomer})
+      : super(key: key);
 
+  final _database = CustomerDatabase();
+
+  final _uuid = const Uuid();
+
+  /// this value is null if new registering,
+  /// is not null if updating.
   final Customer? editingCustomer;
+
+  Customer get _initializedCustomer {
+    var isNew = editingCustomer == null;
+    return isNew ? Customer.init() : editingCustomer!;
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final notifier =
-        ref.watch(registerCustomerStateProvider(editingCustomer).notifier);
-    final state = ref.watch(registerCustomerStateProvider(editingCustomer));
+    final _firstNameController =
+        TextEditingController(text: _initializedCustomer.firstName);
+    final _lastNameController =
+        TextEditingController(text: _initializedCustomer.lastName);
+    final _phoneController = TextEditingController(
+        text: _initializedCustomer.phoneNumber.toString());
+    final _customerController = TextEditingController(
+        text: _initializedCustomer.customerNumber.toString());
     final homeNotifier = ref.watch(homeProvider.notifier);
     return Scaffold(
       appBar: AppBar(),
@@ -26,9 +42,19 @@ class RegisterCustomerView extends HookConsumerWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildTextForms(notifier, state),
+              _buildTextForms(
+                _firstNameController,
+                _lastNameController,
+                _phoneController,
+                _customerController,
+              ),
               _buildSaveButton(() async {
-                await notifier.register();
+                await register(
+                  _firstNameController,
+                  _lastNameController,
+                  _phoneController,
+                  _customerController,
+                );
                 Navigator.of(context).pop();
                 homeNotifier.fetch();
               }),
@@ -39,45 +65,51 @@ class RegisterCustomerView extends HookConsumerWidget {
     );
   }
 
-  Widget _buildTextForms(RegisterCustomerStateNotifier notifier, RegisterCustomerState state) {
+  Widget _buildTextForms(
+      TextEditingController firstName,
+      TextEditingController lastName,
+      TextEditingController phoneNumber,
+      TextEditingController customerNumber) {
     return Column(
       children: [
-        _buildForm(Customer.firstNamePlaceholder, state.firstName,
-            TextInputType.text, (value) => notifier.updateFirstName(value)),
-        _buildForm(Customer.lastNamePlaceholder, state.lastName,
-            TextInputType.text, (value) => notifier.updateLastName(value)),
+        _buildForm(Customer.firstNamePlaceholder,
+          firstName,
+          TextInputType.text,),
         _buildForm(
-            Customer.phoneNumberTitle,
-            state.phoneNumber.toString(),
-            TextInputType.number,
-            (value) => notifier.updatePhoneNumber(value)),
+          Customer.lastNamePlaceholder,
+          lastName,
+          TextInputType.text,
+        ),
         _buildForm(
-            Customer.customerNumberTitle,
-            state.customerNumber.toString(),
-            TextInputType.number,
-            (value) => notifier.updateCustomerNumber(value)),
+          Customer.phoneNumberTitle,
+          phoneNumber,
+          TextInputType.number,
+        ),
+        _buildForm(
+          Customer.customerNumberTitle,
+          customerNumber,
+          TextInputType.number,
+        ),
       ],
     );
   }
 
   Widget _buildForm(
     String label,
-    String? initialText,
+    TextEditingController controller,
     TextInputType keyboardType,
-    void Function(String)? onSubmitted,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextField(
-          controller: TextEditingController(text: initialText),
+          controller: controller,
           style: const TextStyle(fontSize: 12),
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
             labelText: label,
           ),
           keyboardType: keyboardType,
-          onSubmitted: onSubmitted,
         ),
         const SizedBox(
           height: 12,
@@ -93,4 +125,25 @@ class RegisterCustomerView extends HookConsumerWidget {
         backgroundColor: Colors.green,
         tapped: onTap);
   }
+
+  Future<void> register(
+      TextEditingController firstName,
+      TextEditingController lastName,
+      TextEditingController phoneNumber,
+      TextEditingController customerNumber) async {
+    var customerIsNew = editingCustomer == null;
+    var id = customerIsNew ? _uuid.v1() : _initializedCustomer.id;
+    var createdAt = customerIsNew ? DateTime.now() : _initializedCustomer.createdAt;
+    var lastVisit = DateTime.now();
+    var customer = Customer(
+        id: id,
+        firstName: firstName.text,
+        lastName: lastName.text,
+        lastVisit: lastVisit.toString(),
+        createdAt: createdAt.toString(),
+        phoneNumber: int.parse(phoneNumber.text),
+        customerNumber: int.parse(customerNumber.text));
+    _database.insert(customer);
+  }
+
 }
