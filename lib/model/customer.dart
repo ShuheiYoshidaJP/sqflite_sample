@@ -16,12 +16,16 @@ class Customer {
   static String createdAtPlaceholder = 'Created At';
   static String phoneNumberTitle = 'Phone Number';
   static String customerNumberTitle = 'Customer Number';
-  static int phoneNumberInitial = 0;
-  static int customerNumberInitial = 1000;
+  static String phoneNumberInitial = '0';
+  static String customerNumberInitial = '1000';
 
   final String id;
-  final int? phoneNumber, customerNumber;
-  final String? firstName, lastName, createdAt, lastVisit;
+  final String? firstName,
+      lastName,
+      createdAt,
+      lastVisit,
+      phoneNumber,
+      customerNumber;
 
   static const _uuid = Uuid();
 

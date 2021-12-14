@@ -24,8 +24,8 @@ class DatabaseBase {
         '${Customer.lastNameKey} TEXT,'
         '${Customer.lastVisitKey} TEXT,'
         '${Customer.createdAtKey} TEXT,'
-        '${Customer.phoneNumberKey} INTEGER,'
-        '${Customer.customerNumberKey} INTEGER'
+        '${Customer.phoneNumberKey} TEXT,'
+        '${Customer.customerNumberKey} TEXT'
         ')');
   }
 
