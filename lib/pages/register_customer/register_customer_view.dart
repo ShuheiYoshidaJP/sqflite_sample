@@ -142,7 +142,7 @@ class RegisterCustomerView extends HookConsumerWidget {
         lastVisit: lastVisit.toString(),
         createdAt: createdAt.toString(),
         phoneNumber: phoneNumber.text,
-        customerNumber: customerNumber.text);
+        customerNumber: int.parse(customerNumber.text));
     _database.insert(customer);
   }
 

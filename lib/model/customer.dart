@@ -17,15 +17,16 @@ class Customer {
   static String phoneNumberTitle = 'Phone Number';
   static String customerNumberTitle = 'Customer Number';
   static String phoneNumberInitial = '0';
-  static String customerNumberInitial = '1000';
+  static int customerNumberInitial = 1000;
 
   final String id;
   final String? firstName,
       lastName,
       createdAt,
       lastVisit,
-      phoneNumber,
-      customerNumber;
+      phoneNumber;
+  ///if you use "order by", type of property should be integer
+  final int? customerNumber;
 
   static const _uuid = Uuid();
 
