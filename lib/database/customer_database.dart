@@ -12,6 +12,17 @@ class CustomerDatabase {
     return list;
   }
 
+  Future<List<Customer>> searchName(String text) async {
+    var where =
+        '${Customer.firstNameKey} LIKE ? OR ${Customer.lastNameKey} LIKE ?';
+    var whereArgs = ['%$text%', '%$text%'];
+    var maps =
+        await _base.get(Customer.tableKey, where: where, whereArgs: whereArgs);
+    var list =
+        List.generate(maps.length, (index) => Customer.fromMap(maps[index]));
+    return list;
+  }
+
   Future<void> insert(Customer customer) async {
     await _base.insert(Customer.tableKey, customer.toMap,
         conflictAlgorithm: ConflictAlgorithm.replace);

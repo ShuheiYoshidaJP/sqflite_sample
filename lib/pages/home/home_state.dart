@@ -8,5 +8,6 @@ class HomeState with _$HomeState {
   const factory HomeState({
     @Default(false) bool isLoading,
     @Default([]) List<Customer> customers,
+    @Default(false) bool isShowingTextField,
   }) = _HomeState;
 }
