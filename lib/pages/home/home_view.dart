@@ -54,6 +54,10 @@ class HomeView extends HookConsumerWidget {
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           hintText: Constants.searchCustomer,
+          suffixIcon: IconButton(
+            onPressed: homeNotifier.toggleShowingTextField,
+            icon: const Icon(Icons.clear),
+          ),
         ),
         onSubmitted: homeNotifier.onSubmitted,
       ),
