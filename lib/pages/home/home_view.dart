@@ -55,11 +55,12 @@ class HomeView extends HookConsumerWidget {
           border: const OutlineInputBorder(),
           hintText: Constants.searchCustomer,
           suffixIcon: IconButton(
-            onPressed: homeNotifier.toggleShowingTextField,
+            onPressed: homeNotifier.tappedTextFieldClearButton,
             icon: const Icon(Icons.clear),
           ),
         ),
         onSubmitted: homeNotifier.onSubmitted,
+        onChanged: homeNotifier.onChanged,
       ),
     );
   }
@@ -83,7 +84,7 @@ class HomeView extends HookConsumerWidget {
         : AppBar(
             actions: [
               IconButton(
-                onPressed: homeNotifier.toggleShowingTextField,
+                onPressed: homeNotifier.showTextField,
                 icon: const Icon(Icons.search),
               )
             ],

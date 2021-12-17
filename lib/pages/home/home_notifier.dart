@@ -10,8 +10,13 @@ class HomeStateNotifier extends StateNotifier<HomeState> {
     fetch();
   }
 
-  void toggleShowingTextField() {
-    state = state.copyWith(isShowingTextField: !state.isShowingTextField);
+  void showTextField() {
+    state = state.copyWith(isShowingTextField: true);
+  }
+
+  void tappedTextFieldClearButton() {
+    state = state.copyWith(isShowingTextField: false);
+    fetch();
   }
 
   Future<void> fetch() async {
@@ -22,13 +27,16 @@ class HomeStateNotifier extends StateNotifier<HomeState> {
   }
 
   Future<void> onSubmitted(String text) async {
+    state = state.copyWith(isShowingTextField: false);
+  }
+
+  Future<void> onChanged(String text) async {
     if (state.isLoading) return;
     state = state.copyWith(isLoading: true);
     var customerList = await _database.searchName(text);
     state = state.copyWith(
       isLoading: false,
       customers: customerList,
-      isShowingTextField: false,
     );
   }
 }
