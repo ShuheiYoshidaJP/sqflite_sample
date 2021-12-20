@@ -39,4 +39,22 @@ class HomeStateNotifier extends StateNotifier<HomeState> {
       customers: customerList,
     );
   }
+
+  void _sortByNumber() {
+    state.customers.sort((customer1, customer2) {
+      var comparable = customer1.hasNumber && customer2.hasNumber;
+      if (comparable) {
+        return state.listIsAsc
+            ? customer1.customerNumber!.compareTo(customer2.customerNumber!)
+            : customer2.customerNumber!.compareTo(customer1.customerNumber!);
+      } else {
+        return 1;
+      }
+    });
+  }
+
+  void toggleSortNumberButton() {
+    state = state.copyWith(listIsAsc: !state.listIsAsc);
+    _sortByNumber();
+  }
 }

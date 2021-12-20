@@ -9,5 +9,6 @@ class HomeState with _$HomeState {
     @Default(false) bool isLoading,
     @Default([]) List<Customer> customers,
     @Default(false) bool isShowingTextField,
+    @Default(true) bool listIsAsc,
   }) = _HomeState;
 }

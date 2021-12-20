@@ -86,6 +86,10 @@ class HomeView extends HookConsumerWidget {
               IconButton(
                 onPressed: homeNotifier.showTextField,
                 icon: const Icon(Icons.search),
+              ),
+              IconButton(
+                onPressed: homeNotifier.toggleSortNumberButton,
+                icon: const Icon(Icons.swap_vert),
               )
             ],
           );

@@ -32,6 +32,8 @@ class Customer {
 
   String get fullName => '$firstName $lastName';
 
+  bool get hasNumber => customerNumber != null;
+
   Map<String, Object?> get toMap {
     return {
       Customer.idKey: id,
