@@ -26,7 +26,7 @@ class HomeStateNotifier extends StateNotifier<HomeState> {
     state = state.copyWith(isLoading: false, customers: customerList);
   }
 
-  Future<void> onSubmitted(String text) async {
+  void onSubmitted(String text) {
     state = state.copyWith(isShowingTextField: false);
   }
 

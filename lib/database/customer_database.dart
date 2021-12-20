@@ -27,4 +27,10 @@ class CustomerDatabase {
     await _base.insert(Customer.tableKey, customer.toMap,
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
+
+  Future<void> delete(Customer customer) async {
+    var where = '${Customer.idKey} = ?';
+    var whereArgs = [customer.id];
+    await _base.delete(Customer.tableKey, where: where, whereArgs: whereArgs);
+  }
 }
